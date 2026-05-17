@@ -1,0 +1,87 @@
+<div class="page-content-inner">
+  <div class="page-top"><div><h1>Reports &amp; Exports</h1><p>Download your financial data</p></div></div>
+  @if (message) {
+    <div class="card" style="padding:14px;color:var(--primary-dark);margin-bottom:16px">{{ message }}</div>
+  }
+  @if (errorMessage) {
+    <div class="card" style="padding:14px;color:var(--danger);margin-bottom:16px">{{ errorMessage }}</div>
+  }
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-header"><span class="card-title">Export Data</span></div>
+      <div class="card-body">
+        <div class="form-group"><label class="form-label">Date Range</label>
+          <div class="form-row">
+            <input class="form-control" type="date" [(ngModel)]="filters.start" />
+            <input class="form-control" type="date" [(ngModel)]="filters.end" />
+          </div>
+        </div>
+        <div class="form-group"><label class="form-label">Report Type</label>
+          <select class="form-control" [(ngModel)]="filters.reportType"><option value="ALL">All Transactions</option><option value="EXPENSES_ONLY">Expenses Only</option><option value="INCOME_ONLY">Income Only</option></select>
+        </div>
+        <div style="display:flex;gap:10px;margin-top:12px">
+          <button class="btn btn-outline" (click)="fetchReport()">{{ loading ? 'Loading...' : 'Load Data' }}</button>
+          <button class="btn btn-primary" (click)="exportCsv()">Export CSV</button>
+          <button class="btn btn-outline" (click)="exportPdf()">Export PDF Report</button>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><span class="card-title">Summary</span></div>
+      <div class="card-body">
+        <div style="background:var(--primary-light);border-radius:10px;padding:14px;margin-bottom:16px;font-size:13px;color:var(--primary-dark)">
+          <strong>Selected Range</strong><br/>{{ filters.start }} to {{ filters.end }}
+        </div>
+        <div class="fh-row"><span class="fh-label">Income</span><span class="fh-score">{{ formatAmount(totalIncome) }}</span></div>
+        <div class="fh-row"><span class="fh-label">Expense</span><span class="fh-score">{{ formatAmount(totalExpense) }}</span></div>
+        <div class="fh-row"><span class="fh-label">Net Savings</span><span class="fh-score">{{ formatAmount(totalIncome - totalExpense) }}</span></div>
+        <div class="fh-row"><span class="fh-label">Entries</span><span class="fh-score">{{ filteredExpenses().length + filteredIncomes().length }}</span></div>
+      </div>
+    </div>
+  </div>
+  <!-- Monthly Summary Email -->
+  <div class="card" style="margin-top:20px">
+    <div class="card-header"><span class="card-title">Monthly Summary Email</span></div>
+    <div class="card-body">
+      <p style="font-size:13px;color:var(--text-muted);margin-bottom:16px">
+        Send your monthly financial summary directly to your inbox.
+      </p>
+      <div class="form-row" style="margin-bottom:16px">
+        <div class="form-group">
+          <label class="form-label">Year</label>
+          <input class="form-control" type="number" [(ngModel)]="emailYear" min="2020" max="2030" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Month</label>
+          <select class="form-control" [(ngModel)]="emailMonth">
+            <option [value]="1">January</option>
+            <option [value]="2">February</option>
+            <option [value]="3">March</option>
+            <option [value]="4">April</option>
+            <option [value]="5">May</option>
+            <option [value]="6">June</option>
+            <option [value]="7">July</option>
+            <option [value]="8">August</option>
+            <option [value]="9">September</option>
+            <option [value]="10">October</option>
+            <option [value]="11">November</option>
+            <option [value]="12">December</option>
+          </select>
+        </div>
+      </div>
+      @if (emailSent) {
+        <div style="background:#d1fae5;color:#065f46;padding:10px;border-radius:8px;margin-bottom:12px;font-size:13px">
+          ✅ Summary email sent successfully to your inbox!
+        </div>
+      }
+      @if (emailError) {
+        <div style="background:#fee2e2;color:#991b1b;padding:10px;border-radius:8px;margin-bottom:12px;font-size:13px">
+          ❌ {{ emailError }}
+        </div>
+      }
+      <button class="btn btn-primary" (click)="sendSummaryEmail()" [disabled]="sendingEmail">
+        {{ sendingEmail ? 'Sending...' : '📧 Send Summary Email' }}
+      </button>
+    </div>
+  </div>
+</div>

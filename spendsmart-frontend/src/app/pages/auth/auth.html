@@ -1,0 +1,152 @@
+<div class="auth-root">
+
+  <!-- Animated background -->
+  <div class="auth-bg">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+    <div class="grid-lines"></div>
+  </div>
+
+  <!-- Left panel — branding -->
+  <div class="auth-left">
+    <div class="brand-content">
+      <div class="brand-icon">
+        <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+          <rect width="48" height="48" rx="14" fill="url(#brandGrad)"/>
+          <path d="M14 28 L24 16 L34 28" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          <path d="M18 34 L24 24 L30 34" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.6"/>
+          <defs>
+            <linearGradient id="brandGrad" x1="0" y1="0" x2="48" y2="48">
+              <stop offset="0%" stop-color="#6366f1"/>
+              <stop offset="100%" stop-color="#8b5cf6"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+      <h2 class="brand-name">SpendSmart</h2>
+      <p class="brand-tagline">Track. Visualize. Save. Grow.</p>
+
+      <div class="feature-list">
+        <div class="feature-item">
+          <span class="feature-icon">📊</span>
+          <span>Real-time expense analytics</span>
+        </div>
+        <div class="feature-item">
+          <span class="feature-icon">🎯</span>
+          <span>Smart budget tracking</span>
+        </div>
+        <div class="feature-item">
+          <span class="feature-icon">🔄</span>
+          <span>Automated recurring transactions</span>
+        </div>
+        <div class="feature-item">
+          <span class="feature-icon">💡</span>
+          <span>AI-powered financial health score</span>
+        </div>
+      </div>
+
+      <div class="trust-badge">
+        <div class="trust-avatars">
+          <div class="avatar av1">DK</div>
+          <div class="avatar av2">SR</div>
+          <div class="avatar av3">MJ</div>
+        </div>
+        <span>Join thousands managing finances smarter</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right panel — form -->
+  <div class="auth-right">
+    <div class="auth-card">
+
+      <div class="auth-tabs">
+        <button class="auth-tab" [class.active]="activeTab === 'login'" (click)="switchTab('login')">Sign In</button>
+        <button class="auth-tab" [class.active]="activeTab === 'register'" (click)="switchTab('register')">Register</button>
+        <div class="tab-indicator" [style.transform]="activeTab === 'login' ? 'translateX(0)' : 'translateX(100%)'"></div>
+      </div>
+
+      @if (errorMessage) {
+        <div class="error-banner">
+          <span>⚠️</span> {{ errorMessage }}
+        </div>
+      }
+
+      @if (activeTab === 'login') {
+        <div class="form-body">
+          <div class="welcome-text">
+            <h2>Welcome back</h2>
+            <p>Sign in to your account to continue</p>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Email address</label>
+            <div class="input-wrapper">
+              <span class="input-icon">✉️</span>
+              <input class="field-input" type="email" placeholder="you@example.com"
+                [(ngModel)]="loginForm.email" name="loginEmail" />
+            </div>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Password</label>
+            <div class="input-wrapper">
+              <span class="input-icon">🔒</span>
+              <input class="field-input" type="password" placeholder="Enter your password"
+                [(ngModel)]="loginForm.password" name="loginPassword" />
+            </div>
+          </div>
+          <button class="submit-btn" (click)="doLogin()" [disabled]="loading">
+            <span class="btn-text">{{ loading ? 'Signing in...' : 'Sign In' }}</span>
+            <span class="btn-arrow">→</span>
+          </button>
+          <div class="divider"><span>or continue with</span></div>
+          <div id="google-btn-container" class="google-btn-wrap"></div>
+        </div>
+      }
+
+      @if (activeTab === 'register') {
+        <div class="form-body">
+          <div class="welcome-text">
+            <h2>Create account</h2>
+            <p>Start your financial journey today</p>
+          </div>
+          <div class="field-row">
+            <div class="field-group">
+              <label class="field-label">First Name</label>
+              <div class="input-wrapper">
+                <input class="field-input" [(ngModel)]="registerForm.firstName" name="firstName" placeholder="First name" />
+              </div>
+            </div>
+            <div class="field-group">
+              <label class="field-label">Last Name</label>
+              <div class="input-wrapper">
+                <input class="field-input" [(ngModel)]="registerForm.lastName" name="lastName" placeholder="Last name" />
+              </div>
+            </div>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Email</label>
+            <div class="input-wrapper">
+              <span class="input-icon">✉️</span>
+              <input class="field-input" type="email" [(ngModel)]="registerForm.email" name="registerEmail" placeholder="you@example.com" />
+            </div>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Password</label>
+            <div class="input-wrapper">
+              <span class="input-icon">🔒</span>
+              <input class="field-input" type="password" [(ngModel)]="registerForm.password" name="registerPassword" placeholder="Min 8 characters" />
+            </div>
+          </div>
+          <button class="submit-btn" (click)="doRegister()" [disabled]="loading">
+            <span class="btn-text">{{ loading ? 'Creating account...' : 'Create Account' }}</span>
+            <span class="btn-arrow">→</span>
+          </button>
+          <div class="divider"><span>or continue with</span></div>
+          <div id="google-btn-container" class="google-btn-wrap"></div>
+        </div>
+      }
+
+    </div>
+  </div>
+</div>
